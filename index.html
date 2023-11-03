@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="description"
+        content="Generative Escher Meshes creates tileable shapes from text, similar to M.C. Escher's art.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generative Escher Meshes</title>
+
+  
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <script LANGUAGE="JavaScript">
+
+    // Set up the image files to be used.
+    var theImages = new Array() // do not change this
+    // To add more image files, continue with the
+    // pattern below, adding to the array.
+
+    theImages[0] = './static/images/icon/1.png'
+    theImages[1] = './static/images/icon/2.png'
+    theImages[2] = './static/images/icon/3.png'
+    theImages[3] = './static/images/icon/4.png'
+    theImages[4] = './static/images/icon/5.png'
+    
+    // do not edit anything below this line
+
+    var j = 0
+    var p = theImages.length;
+    var preBuffer = new Array()
+    for (i = 0; i < p; i++) {
+      preBuffer[i] = new Image()
+      preBuffer[i].src = theImages[i]
+    }
+    var whichImage = Math.floor(Math.random() * (p));
+    function showImage() {
+      document.write('<link rel="icon" href="' + theImages[whichImage] + '">');
+    }
+
+          //  End -->
+  </script>
+  <script>showImage()</script>
+  <!-- <link rel="icon" href="./static/images/icon/2.png"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://noamaig.github.io/html/projects/orbifold/orbifold_lowres.pdf">
+            Orbifold Tutte Embedding
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Generative Escher Meshes</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://noamaig.github.io/">Noam Aigerman</a><sup>*1,2</sup>,</span>
+              <span class="author-block">
+              <a href="http://imagine.enpc.fr/~groueixt/">Thibault Groueix</a><sup>*1</sup>,</span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">* Denotes equal contribution</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Adobe Research,</span>
+            <span class="author-block"><sup>2</sup>University of Montreal</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2309.14564"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2309.14564"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="./"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (coming soon...)</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <!-- <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video> -->
+      <!-- <video id="teaser" autoplay muted loop playsinline height="100%"> -->
+        <img src="./static/images/teaser/teaser.png"></img>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Generative Escher Meshes</span> creates tileable shapes from text, similar to M.C. Escher's art. 
+      </h2>
+    </div>
+  </div>
+</section>
+<style type="text/css">
+  .item p {
+    width: 100%;
+    line-height: 26px;
+    font-size: 24px;
+    text-align: center;
+    padding-bottom: 25px;
+  }
+</style>
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+
+        <div class="item item-0">
+          <video poster="" id="0" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/0.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A puzzle piece</span></p>
+        </div>
+
+        <div class="item item-1">
+          <video poster="" id="1" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/1.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A flamenco dancer</span></p>
+        </div>
+
+        <div class="item item-2">
+          <video poster="" id="2" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/2.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">The letter Z</span></p>
+        </div>
+
+        <div class="item item-3">
+          <video poster="" id="3" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/3.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A woman in a yoga pose</span></p>
+        </div>
+
+        <div class="item item-4">
+          <video poster="" id="4" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/4.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A dalmatian dog</span></p>
+        </div>
+
+        <div class="item item-5">
+          <video poster="" id="5" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/5.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">An elephant</span></p>
+        </div>
+
+        <div class="item item-6">
+          <video poster="" id="6" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/6.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A woman in a yoga pose</span></p>
+        </div>
+
+        <div class="item item-7">
+          <video poster="" id="7" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/7.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A peacock feather</span></p>
+        </div>
+
+        <div class="item item-8">
+          <video poster="" id="8" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/8.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">Saturn with shooting stars</span></p>
+        </div>
+
+        <div class="item item-9">
+          <video poster="" id="9" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/9.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A coy fish</span></p>
+        </div>
+
+        <div class="item item-10">
+          <video poster="" id="10" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/10.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A wolf</span></p>
+        </div>
+
+        <div class="item item-11">
+          <video poster="" id="11" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/11.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A pinecone</span></p>
+        </div>
+
+        <div class="item item-12">
+          <video poster="" id="12" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/12.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A nerdy bear</span></p>
+        </div>
+
+        <div class="item item-13">
+          <video poster="" id="13" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/13.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A ballet dancer</span></p>
+        </div>
+
+        <div class="item item-14">
+          <video poster="" id="14" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/14.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">An octopus</span></p>
+        </div>
+
+        <div class="item item-15">
+          <video poster="" id="15" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/15.mp4" type="video/mp4">
+          </video>
+          <p><span class="dnerf">A dolphin</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            This paper proposes a fully-automatic, text-guided generative method for
+            producing periodic, repeating, tile-able 2D art, such as the one seen on floors,
+            mosaics, ceramics, and the work of M.C. Escher. 
+          </p>
+          <p>
+            In contrast to the standard
+            concept of a seamless texture, i.e., square images that are seamless when
+            tiled, our method generates non-square tilings which comprise solely of
+            repeating copies of the same object. It achieves this by optimizing both
+            geometry and color of a 2D mesh, in order to generate a non-square tile in
+            the shape and appearance of the desired object, with close to no additional
+            background details.
+          </p>
+          <p>    
+            We enable geometric optimization of tilings by our key
+            technical contribution: an unconstrained, differentiable parameterization of
+            the space of all possible tileable shapes for a given symmetry group. Namely,
+            we prove that modifying the laplacian used in a 2D mesh-mapping technique
+            - Orbifold Tutte Embedding - can achieve all possible tiling configurations
+            for a chosen planar symmetry group. We thus consider both the mesh's
+            tile-shape and its texture as optimizable parameters, rendering the textured
+            mesh via a differentiable renderer. We leverage a trained image diffusion
+            model to define a loss on the resulting image, thereby updating the mesh's
+            parameters based on its appearance matching the text prompt. 
+          </p>
+          <p>
+            We show our
+            method is able to produce plausible, appealing results, with non-trivial tiles,
+            for a variety of different periodic tiling patterns.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3 ">What do we call a tileable shape?</h2>
+          <p>
+            We say a shape is <i>tileable</i> with regards to a symmetry group if the action of the group on the shape creates a tessalation of the plane, i.e. a covering with no gaps, nor overlaps.
+            There exist only <a href=https://en.wikipedia.org/wiki/Wallpaper_group>17 such symmetry groups</a>, called the <i>wallpaper groups</i>.
+          </p>
+          <video id="tilability" autoplay controls muted loop playsinline width="62%">
+            <source src="./static/videos/method/tilability.mp4"
+                    type="video/mp4">
+          </video><img src="./static/images/didactictile.png" alt="Tilability" width="35.8%">
+          <p>
+            <i>
+              <b>The tiling's basic structure.</b> The tile (in <span style="color: #73c162">green</span>) is mapped to a copy of itself (dashed boundary)
+              by an isometry <span class="math inline"><em>g</em><sub><em>i</em></sub></span> which is a
+              member of the wallpaper group describing the symmetries of the desired
+              tiling. The boundary vertex <span class="math inline"><em>v</em><sub><em>i</em></sub><sup>&part;</sup></span>
+              is mapped by <span class="math inline"><em>g</em><sub><em>i</em></sub></span> exactly to
+              another boundary vertex, <span class="math inline"><em>v</em><sub><em>j</em></sub><sup>&part;</sup></span>.
+              This results in a correspondence along the boundary, visualized via
+              matching boundary colors - one for each of the two symmetries which
+              generate the tiling. Black vertices are fixed axes of rotation.
+            </i>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3 ">Overview</h2>
+          <!-- <p>
+            We say a shape is <i>tileable</i> with regards to a symmetry group if the action of the group on the shape creates a tessalation of the plane, i.e. a covering with no gaps, nor overlaps.
+            There exist only <a href=https://en.wikipedia.org/wiki/Wallpaper_group>17 such symmetry groups</a>, called the <i>wallpaper groups</i>.
+          </p> -->
+          <!-- <video id="tilability" autoplay controls muted loop playsinline width="62%">
+            <source src="./static/videos/method/tilability.mp4"
+                    type="video/mp4">
+          </video> -->
+          <img src="./static/images/overview.png" alt="Tileability" width="100%">
+          <p>
+            <i>
+              <p> <b>Overview of our method. </b> We optimize the weights 
+                <span class="math inline"><strong>W</strong></span> and the texture image \(\mathcal{I}\). 
+                The edge weights <span class="math inline"><strong>W</strong></span>
+                are used to construct the Laplacian used in the linear system of
+                OTE~[Aigerman 2015]. The solution of this linear system assigns new
+                positions <span class="math inline"><strong>V</strong></span> to the
+                vertices of the mesh, which is guaranteed to represent a valid tile,
+                with no self-overlaps, that can tile the plane perfectly - because those constraints translate to equations in the linear system. The mesh is
+                textured using the texture image \(\mathcal{I}\) and
+                rendered via a differentiable renderer, producing the final rendered
+                image \(\mathcal{R}\) of the textured tile, which is
+                then input into Score Distillation Sampling~[Poole 2022], from which
+                gradients are back-propagated to the optimizable parameters - <span class="math inline"><strong>W</strong></span> and \(\mathcal{I}\), which control the shape and texture of the
+                tile.</p>
+            </i>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Multi-tile generation</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            <b>Multi-tile generation.</b> Our approach can optimize simultaneously
+            for two tile shapes for two different prompts, by having each shape consist
+            of half of the underlying mesh. The same can be achieved for more than two sub-parts.
+          </p>
+        </div>
+        <video poster="" id="0" autoplay controls muted loop playsinline width="49%">
+          <source src="./static/videos/dual/0.mp4" type="video/mp4">
+        </video>
+        <video poster="" id="1" autoplay controls muted loop playsinline width="49%">
+          <source src="./static/videos/dual/1.mp4" type="video/mp4">
+        </video>
+        
+        <p><span class="dnerf">Left: &quot;A scuba-diver.&quot;, &quot;A tropical fish.&quot;
+        Right: &quot;Man doing yoga in a tree pose.&quot;, &quot;A tree.&quot;</span></p>
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+   
+    <!--/ Animation. -->
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Optimization</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            During optimization, we visualize the mesh, and the resulting tiling. The gradients provided by the visual loss, Score Distillation Sampling, are very noisy and vary wildly in magnitude. 
+            Because of our injectivity constraints and periodic constraints, the shape we optimize is garanteed to remain always tileable.
+          </p>
+        </div>
+        <video poster="" id="optim_mesh" autoplay controls muted playsinline width="49%">
+          <source src="./static/videos/visu/optim_mesh.mp4" type="video/mp4">
+        </video>
+        <video poster="" id="optim_tile" autoplay controls muted playsinline width="49%">
+          <source src="./static/videos/visu/optim_tile.mp4" type="video/mp4">
+        </video>
+        <!-- <button onclick="setPlaySpeed()" type="button">Set video to be play in slow motion</button><br> -->
+
+        <script>
+          let vid1 = document.getElementById("optim_mesh");
+          let vid2 = document.getElementById("optim_tile");
+          window.onload = function () {
+            vid1.playbackRate = 0.5;
+            vid2.playbackRate = 0.5;
+          } 
+        </script>
+
+        <p><span class="dnerf">A cartoon of an alligator.</span></p>
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Fabrication</h2>
+    
+        <div class="content has-text-justified">
+          <p>
+            We can 3D print the generated tiles! We print the <span class="dnerf">"Flamenco Dancer".</span> via the website
+            <a href="https://www.shapeways.com/">Shapeways</a>, using four different color. On the right, we show the beginning
+            of the plane tessellation using this tiles. This showcases the possibility of
+            physically creating tiles that are unique in the world, and using them for
+            decoration and design.
+          </p>
+        </div>
+        <!-- begin a row of 3 images -->
+        <style>
+          /* Three image containers (use 25% for four, and 50% for two, etc) */
+          .column-2 {
+            float: left;
+            width: 33.33%;
+            padding: 5px;
+          }
+
+          /* Clear floats after image containers */
+          .row::after {
+            content: "";
+            clear: both;
+            display: table;
+          }
+        </style>
+        <div class="row">
+          <div class="column column-2" style="width:33%">
+            <img src="./static/images/fabrication/1.png" style="width:100%">
+            <figcaption><span class="dnerf">Digital version.</span.></figcaption>
+          </div>
+          <div class="column column-2" style="width:33%">
+            <img src="./static/images/fabrication/IMG_9553.JPG" style="width:100%">
+            <figcaption><span class="dnerf">Fabricated tiles.</span.></figcaption>
+            </div>
+            <div class="column column-2" style="width:33%">
+              <img src="./static/images/fabrication/IMG_9539_2.JPG" style="width:100%">
+              <figcaption><span class="dnerf">Plane Tesselation.</span.></figcaption>
+          </div>
+        </div>
+        <!-- <button onclick="setPlaySpeed()" type="button">Set video to be play in slow motion</button><br> -->
+      </div>
+    </div>
+
+    <!-- Concurrent Work. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <!-- Begin list -->
+          <li>
+              <a href="https://dl.acm.org/doi/pdf/10.1145/344779.345022">[Kaplan 2000]</a> Craig S. Kaplan and David H. Salesin. 2000. <i>Escherization.</i> In Proceedings of the 27th
+              Annual Conference on Computer Graphics and Interactive Techniques (SIGGRAPH
+              '00). Escherization is a major inspiration of this work, creating Escher-like tilings by fitting an n-gon to an image.
+          </li>
+          <li>
+              <a href="https://noamaig.github.io/html/projects/orbifold/orbifold_lowres.pdf">[Aigerman 2015]</a> Noam Aigerman and Yaron Lipman. 2015. <i> Orbifold tutte embeddings.</i> ACM Trans.
+              Graph.  Key reference showing how to create an injective map from 2D patch to another respecting periodic constraints.
+          </li>
+          
+        </div>
+        <!-- <h2 class="title is-3 ">Trivia</h2>
+        <p>
+          <li>There are exactly 17 wallpaper groups. <a href="https://en.wikipedia.org/wiki/Crystallographic_restriction_theorem">This</a> Wikipedia article presents the key part of the proof.</li>
+          <li>If you assume that the rigid transformations can be taken in a specific order, i.e., the space of transformations you apply to transform the base tile is not an algebraic group, then there are exactly 91 NAME.</li>
+          <li>Is there a shape that can tile the plane non-periodically such that every repetition has a different orientation? This hypothetical shape has been called the <a href="https://en.wikipedia.org/wiki/Einstein_problem#:~:text=In%20plane%20geometry%2C%20the%20einstein,German%20for%20%22one%20stone%22.">Einstein</a>, and its discovery considered a holy grail. Pending peer-review, the author of Escharization, G. Kaplan and colleagues have found it!</li>
+          <li><a href="https://www.linkedin.com/pulse/when-mathematics-meets-home-improvement-i-first-escher-ian-ashmore/">When Mathematics Meets Home Improvement I: First Escher Fireplace.</a> This blog describe how to use Escher tilings to tile a fireplace, creating a unique art piece in the physical world.</li>
+        </p> -->
+      </div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 ">Acknowledgments and funding</h2>
+        <img src="./static/images/Adobe-logo.png" alt="Adobe" width="20%">
+        <img src="./static/images/montreal_logo.png" alt="University of Montreal" width="20%">
+        <p>
+          We thank <a href="http://www.vovakim.com/">Vova Kim</a> for providing feedback on the draft and creating the beautiful javascript UI that shows the tiling. We thank <a href="http://mgadelha.me/">Matheus Gadelha</a> for insights on the pixel-based baseline we compare against.
+          We also thank <a href="https://julienphilip.com/">Julien Philip</a>, <a href="http://cranehechen.com/">Crane Chen</a> and <a href="https://people.cs.uchicago.edu/~ranahanocka/">Rana Hanocka</a> for fruitful discussions.
+        </p>
+      </div>
+    </div>
+    <!--/ Concurrent Work. -->
+
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{escher2023,
+  author    = {Noam Aigerman and Thibault Groueix},
+  title     = {Generative Escher Meshes},
+  journal   = {ArXiv},
+  year      = {2023},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/ThibaultGROUEIX/GenerativeEscherPatterns" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-5">
+        <div class="content">
+          <p>
+            We thank the authors of 
+            <a href="https://nerfies.github.io/">Nerfies</a>
+            for the template of this website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
